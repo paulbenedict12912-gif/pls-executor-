@@ -2,16 +2,13 @@ package com.kuroko.apkforge
 
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.kuroko.apkforge.databinding.ActivityMainBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,9 +38,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val robloxWatcher = object : Runnable {
+    private val watcher = object : Runnable {
         override fun run() {
-            pollRoblox()
+            pollStatus()
             handler.postDelayed(this, 2000)
         }
     }
@@ -76,14 +73,14 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, AppListActivity::class.java))
         }
 
-        binding.btnExecute.setOnClickListener { execute() }
+        binding.btnExecute.setOnClickListener { runScript() }
 
-        handler.post(robloxWatcher)
+        handler.post(watcher)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        handler.removeCallbacks(robloxWatcher)
+        handler.removeCallbacks(watcher)
     }
 
     private fun refreshPreview() {
@@ -95,40 +92,37 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun pollRoblox() {
-        lifecycleScope.launch {
-            val pid = withContext(Dispatchers.IO) {
-                try { RootShell.findPid("com.roblox.client") } catch (_: Exception) { -1 }
-            }
-            if (pid > 0) {
-                binding.dotRoblox.setBackgroundColor(getColor(R.color.accent2))
-                binding.txtRoblox.text = "roblox running  (pid $pid)"
-                binding.txtAttach.text = if (Native.loaded) "native ready" else "native missing"
-            } else {
-                binding.dotRoblox.setBackgroundColor(getColor(R.color.danger))
-                binding.txtRoblox.text = "roblox not detected"
-                binding.txtAttach.text = "not attached"
-            }
+    private fun pollStatus() {
+        val installed = try {
+            packageManager.getPackageInfo("com.roblox.client", 0)
+            true
+        } catch (_: PackageManager.NameNotFoundException) {
+            false
+        }
+
+        if (installed) {
+            binding.dotRoblox.setBackgroundColor(getColor(R.color.accent2))
+            binding.txtRoblox.text = "roblox installed on device"
+            binding.txtAttach.text = "shell mode"
+        } else {
+            binding.dotRoblox.setBackgroundColor(getColor(R.color.danger))
+            binding.txtRoblox.text = "roblox not found"
+            binding.txtAttach.text = "shell mode"
         }
     }
 
-    private fun execute() {
+    private fun runScript() {
         if (currentCode.isBlank()) {
-            log("nothing to execute")
+            log("nothing to run — write or load a script first")
             return
         }
-        binding.txtStatus.text = "● running"
-        lifecycleScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                val hasRoot = RootShell.hasRoot()
-                if (!hasRoot) return@withContext "no injection path — device not rooted"
-                val pid = RootShell.findPid("com.roblox.client")
-                if (pid <= 0) return@withContext "roblox is not running"
-                if (!Native.loaded) return@withContext "native library missing"
-                Native.executeScript(pid, currentCode)
-            }
-            log("result: $result")
-            binding.txtStatus.text = "● idle"
+        val f = java.io.File(ApkUtils.outputDir(), currentName)
+        try {
+            f.writeText(currentCode)
+            log("saved to ${f.absolutePath}")
+            log("shell mode — script export only, no in-game execution")
+        } catch (e: Exception) {
+            log("save failed: ${e.message}")
         }
     }
 
