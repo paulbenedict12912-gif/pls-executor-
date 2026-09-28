@@ -1,45 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center"
+    android:background="@color/bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:text="ApkForge"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:text="copy · explore · sign"
-        android:textSize="14sp"
-        android:alpha="0.6"
-        android:layout_marginBottom="40dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/btnPick"
-        android:text="Pick App to Copy"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="14dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/btnExplore"
-        android:text="Explore Last APK"
-        android:layout_marginTop="12dp"
+        <TextView
+            android:text="kuroko"
+            android:textColor="@color/accent"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txtStatus"
+            android:text="● idle"
+            android:textColor="@color/text_dim"
+            android:background="@color/surface"
+            android:padding="6dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textSize="12sp"
+            android:layout_marginEnd="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btnForge"
+            android:text="Forge"
+            android:textSize="11sp"
+            android:minWidth="0dp"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="12dp"
+        android:paddingTop="0dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/dotRoblox"
+            android:background="@color/danger"
+            android:layout_width="10dp"
+            android:layout_height="10dp"/>
+
+        <TextView
+            android:id="@+id/txtRoblox"
+            android:text="roblox not detected"
+            android:textColor="@color/text_dim"
+            android:textSize="12sp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txtAttach"
+            android:text="not attached"
+            android:textColor="@color/text_dim"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/surface"
+        android:padding="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="script"
+            android:textColor="@color/text_dim"
+            android:textSize="11sp"
+            android:layout_marginEnd="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txtScript"
+            android:text="untitled.lua"
+            android:textColor="@color/text"
+            android:fontFamily="monospace"
+            android:textSize="13sp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btnHub"
+            android:text="Hub"
+            android:textSize="11sp"
+            android:minWidth="0dp"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:background="@color/surface"
+        android:layout_margin="12dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <TextView
+            android:id="@+id/txtPreview"
+            android:text="no script loaded.\n\ntap Edit to write one, or Hub to pull from the script list."
+            android:textColor="@color/text_dim"
+            android:fontFamily="monospace"
+            android:textSize="12sp"
+            android:padding="14dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </ScrollView>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnEdit"
+            android:text="Edit"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btnClear"
+            android:text="Clear"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btnExecute"
+            android:text="Execute"
+            android:textColor="@color/bg"
+            android:backgroundTint="@color/accent2"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/btnOut"
-        android:textSize="12sp"
-        android:alpha="0.7"
-        android:layout_marginTop="32dp"
+        android:text="console"
+        android:textColor="@color/text_dim"
+        android:textSize="11sp"
+        android:paddingStart="14dp"
+        android:paddingTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
+    <ScrollView
+        android:background="@color/surface"
+        android:layout_margin="12dp"
+        android:layout_marginTop="4dp"
+        android:layout_height="140dp"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:id="@+id/txtLog"
+            android:fontFamily="monospace"
+            android:textColor="@color/text_dim"
+            android:textSize="11sp"
+            android:padding="10dp"
+            android:textIsSelectable="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </ScrollView>
 </LinearLayout>
